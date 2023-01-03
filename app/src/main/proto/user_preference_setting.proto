@@ -1,0 +1,20 @@
+// https://developers.google.com/protocol-buffers/docs/proto3
+// clean & rebuild & gradle sync to initiate proto auto generated class
+
+syntax = "proto3";
+package user_preference;
+
+option java_package = "com.muhrifqii.protokoin";
+option java_multiple_files = true;
+
+message UserPreferenceSetting {
+
+  bool first_launched = 1;
+  BiometricLoginOption login_option = 2;
+
+  enum BiometricLoginOption {
+    NONE = 0;
+    FINGERPRINT = 1;
+    FACE = 2;
+  }
+}

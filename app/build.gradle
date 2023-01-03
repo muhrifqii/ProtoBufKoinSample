@@ -1,0 +1,83 @@
+plugins {
+  id 'com.android.application'
+  id 'org.jetbrains.kotlin.android'
+  id "com.google.devtools.ksp"
+  id "com.google.protobuf"
+}
+
+android {
+  namespace 'com.muhrifqii.protokoin'
+  compileSdk 33
+
+  defaultConfig {
+    applicationId "com.muhrifqii.protokoin"
+    minSdk 28
+    targetSdk 33
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  kotlinOptions {
+    jvmTarget = '1.8'
+  }
+  applicationVariants.configureEach { variant ->
+    kotlin.sourceSets {
+      getByName(name) {
+        kotlin.srcDir("build/generated/ksp/${variant.name}/kotlin")
+      }
+    }
+  }
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:3.18.0"
+  }
+  generateProtoTasks {
+    plugins {
+      kotlin {
+        artifact = "com.google.protobuf:protobuf-kotlin-lite:3.18.0"
+      }
+    }
+    all().each { task ->
+      task.builtins {
+        java {
+          option 'lite'
+        }
+        kotlin {
+          option 'lite'
+        }
+      }
+    }
+  }
+}
+
+dependencies {
+
+  implementation 'androidx.core:core-ktx:1.9.0'
+  implementation 'androidx.appcompat:appcompat:1.5.1'
+  implementation 'com.google.android.material:material:1.7.0'
+  implementation 'androidx.core:core-ktx:1.9.0'
+  implementation "androidx.datastore:datastore:1.0.0"
+  implementation "com.google.protobuf:protobuf-javalite:3.18.0"
+  implementation "com.google.protobuf:protobuf-kotlin-lite:3.18.0"
+  implementation "io.insert-koin:koin-core:3.3.2"
+  implementation "io.insert-koin:koin-android:3.3.2"
+  implementation "io.insert-koin:koin-annotations:1.1.0"
+  ksp "io.insert-koin:koin-ksp-compiler:1.1.0"
+  testImplementation 'junit:junit:4.13.2'
+  androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+}
